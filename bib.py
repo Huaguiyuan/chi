@@ -65,25 +65,3 @@ class Bib:
             print('(%s) - ' % (entry['index'], entry['bibentry']['year'])
                   + entry['bibentry']['title'])
         print('\n=======================================================\n')
-
-    def search(self, string, fields, path):
-        s_list = sort.indexify(self.entries)
-        for search in sort.deconstruct(string):
-            results = []
-            for entry in s_list:
-                s_string = ''
-                for field in fields:
-                    try:
-                        s_string += ' '+entry['bibentry'][field]
-                    except KeyError:
-                        pass
-                s_string = s_string.lower()
-                if all(any(OR in s_string for OR in AND) for AND in search):
-                    results.append(entry)
-            s_list = results
-        # TODO reimplement year filter
-
-        sort.printSearch(results)
-        with open(path, 'w') as f:
-            for entry in results:
-                f.write(' %d' % entry['index'])
